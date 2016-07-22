@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Today</string>
+    <string name="last">上一条</string>
+    <string name="next">下一条</string>
 </resources>
