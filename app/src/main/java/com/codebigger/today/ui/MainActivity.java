@@ -88,6 +88,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private String turn2Date(String date) {
-        return "公元 " + date.substring(0,4)+" 年 " + date.substring(4,6) + " 月 " + date.substring(6,8) + " 日 ";
+        int year_index = date.length() - 4;
+        return "公元 " + date.substring(0,year_index)+" 年 "
+                + date.substring(year_index,year_index + 2) + " 月 "
+                + date.substring(year_index + 2,year_index + 4) + " 日 ";
     }
 }
