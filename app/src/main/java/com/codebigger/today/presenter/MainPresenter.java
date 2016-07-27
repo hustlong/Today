@@ -1,5 +1,7 @@
 package com.codebigger.today.presenter;
 
+import android.os.Handler;
+
 import com.codebigger.today.model.MainModel;
 import com.codebigger.today.model.ResultModelBean;
 import com.codebigger.today.view.MainView;
@@ -14,9 +16,12 @@ public class MainPresenter implements Presenter<MainView>,IMainPresenter {
 
     private MainModel mMainModel;
 
+    private Handler mHandler;
+
     public MainPresenter(String day,MainView view) {
         attachView(view);
         mMainModel = new MainModel(day,this);
+        mHandler = new Handler();
     }
 
     public void loadData() {
@@ -24,9 +29,7 @@ public class MainPresenter implements Presenter<MainView>,IMainPresenter {
     }
 
     public void loadNextData() {
-
         mMainModel.loadNextData();
-
     }
 
     public void loadLastData() {
@@ -34,8 +37,14 @@ public class MainPresenter implements Presenter<MainView>,IMainPresenter {
     }
 
     @Override
-    public void loadDataSuccess(ResultModelBean resultModelBean) {
-        mMainView.displayData(resultModelBean);
+    public void loadDataSuccess(final ResultModelBean resultModelBean) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mMainView.displayData(resultModelBean);
+            }
+        });
+
     }
 
     @Override

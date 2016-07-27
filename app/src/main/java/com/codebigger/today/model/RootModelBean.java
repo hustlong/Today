@@ -1,5 +1,6 @@
 package com.codebigger.today.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
