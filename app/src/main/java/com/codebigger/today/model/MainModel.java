@@ -35,6 +35,9 @@ public class MainModel {
     /**  当前展示的第几条信息 */
     private int curIndex = 0;
 
+    /** 是不是正在下载数据 */
+    private boolean isDownloading = false;
+
     public MainModel(String day, IMainPresenter mIMainPresenter) {
         this.day = day;
         this.mIMainPresenter = mIMainPresenter;
@@ -42,12 +45,14 @@ public class MainModel {
     }
 
     public void loadData() {
+        isDownloading = true;
         AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
         asyncHttpClient.get(baseUrl + day, new TextHttpResponseHandler() {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 mIMainPresenter.loadDataFailure();
+                isDownloading = false;
             }
 
             @Override
@@ -64,13 +69,18 @@ public class MainModel {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                isDownloading = false;
             }
         });
     }
 
-
-
     public void loadNextData() {
+        if (resultList == null) {
+            mIMainPresenter.loadDataFailure();
+            if (!isDownloading)
+                loadData();
+            return;
+        }
         curIndex++;
         if (curIndex < resultList.size())
             mIMainPresenter.loadDataSuccess(resultList.get(curIndex));
@@ -82,6 +92,12 @@ public class MainModel {
     }
 
     public void loadLastData() {
+        if (resultList == null) {
+            mIMainPresenter.loadDataFailure();
+            if (!isDownloading)
+                loadData();
+            return;
+        }
         curIndex--;
         if (curIndex > -1) {
             mIMainPresenter.loadDataSuccess(resultList.get(curIndex));

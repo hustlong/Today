@@ -93,4 +93,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 + date.substring(year_index,year_index + 2) + " 月 "
                 + date.substring(year_index + 2,year_index + 4) + " 日 ";
     }
+
 }
